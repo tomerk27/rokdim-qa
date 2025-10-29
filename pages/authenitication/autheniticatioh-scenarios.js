@@ -16,5 +16,6 @@ export const loginWeb = async(page, email, password, negativeTest) => {
 }
 
 export const logoutWeb = async(page) => {
-
+    const loginPage = new LoginPage(page)
+    
 }

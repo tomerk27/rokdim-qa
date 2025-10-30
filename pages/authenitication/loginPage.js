@@ -1,3 +1,4 @@
+import { expect } from "@playwright/test"
 export class LoginPage {
     /**
      * @param {import(@playwright/test).Page} page 
@@ -25,5 +26,13 @@ export class LoginPage {
 
     async clickRegisterLink(){
         await this.registerLink.click()
+    }
+
+    async checkLogin(negativeTest) {
+        if(!negativeTest){
+                await expect(this.page).toHaveURL('rokdim.co.il')
+            }
+            else
+                await expect(this.page).toHaveURL('https://rokdim.co.il/login?redirect=%2F')
     }
 }

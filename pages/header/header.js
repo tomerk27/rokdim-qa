@@ -1,3 +1,5 @@
+import { expect } from '@playwright/test'
+
 export class HeaderPage {
     /**
      * @param {import(@playwright/test).Page} page
@@ -5,7 +7,7 @@ export class HeaderPage {
     constructor(page) {
         this.page = page
         this.dashboardButton = this.page.getByRole('link', { name: 'logo', exact: true })
-        this.dancesButton = this.page.getByRole('link', { name: 'Dances', exact: true })
+        this.sessionsButtondancesButton = this.page.getByRole('link', { name: 'Dances', exact: true })
         this.sessionsButton = this.page.getByRole('link', { name: 'Sessions', exact: true })
         this.teachersButton = this.page.getByRole('link', { name: 'Teachers' })
         this.vipButton = this.page.getByRole('link', { name: 'VIP', exact: true })
@@ -67,5 +69,17 @@ export class HeaderPage {
             await this.searchBar.fill(content)
 
         await this.searchButton.click() 
+    }
+
+    async checkMarkidSite() {
+        await expect(this.page).toHaveURL('http://markid.co.il/')
+    }
+
+    async checkDunavSite() {
+        await expect(this.page).toHaveURL('https://dunav.org.il/')
+    }
+
+    async checkGoingToYaronMeisharPage() {
+        await expect(this.page).toHaveText('Mobile Phone: 052-5620447')
     }
 }

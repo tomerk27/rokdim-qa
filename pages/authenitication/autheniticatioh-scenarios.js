@@ -1,4 +1,3 @@
-import {expect} from '@playwright/test'
 import { LoginPage } from './loginPage'
 
 export const loginWeb = async(page, email, password, negativeTest) => {
@@ -8,14 +7,10 @@ export const loginWeb = async(page, email, password, negativeTest) => {
     await loginPage.fillPaswordInput(password)
     await loginPage.clickLoginButton()
 
-    if(!negativeTest){
-        await expect(page).toHaveURL('rokdim.co.il')
-    }
-    else
-        await expect(page).toHaveURL('https://rokdim.co.il/login?redirect=%2F')
+    await loginPage.checkLogin(negativeTest)
 }
 
-export const logoutWeb = async(page) => {
-    const loginPage = new LoginPage(page)
-    
-}
+//export const logoutWeb = async(page) => {
+//    const loginPage = new LoginPage(page)
+//    
+//}

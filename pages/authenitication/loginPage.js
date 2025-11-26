@@ -6,20 +6,21 @@ export class LoginPage {
     constructor(page) {
         this.page = page
 
-        this.emailInput = this.page.locator('input[type="text"]')
+        this.emailInput = this.page.locator('form').filter({ hasText: 'EmailPassword (min 6' }).locator('input[type="text"]')
         this.passwordInput = this.page.getByRole('textbox', { name: 'Password (min 6 characters)' })
-        this.loginButton = this.page.getByRole('button', { name: 'Login'})
+        this.loginButton = this.page.getByRole('button', { name: 'Login', exact: true })
         this.registerLink = this.page.getByRole('link', { name: 'Register' })
     }
 
-    async fillEmailInput(email) {
-        await this.emailInput.fill(email)
-    }
+    async fillLoginForm(loginData){
+        const {email, password} = loginData
 
-    async fillPaswordInput(password){
-        await this.passwordInput.fill(password)
-    }
+        if(email)
+            await this.emailInput.fill(email)
 
+        if(password)
+            await this.passwordInput.fill(password)
+    }
     async clickLoginButton(){
         await this.loginButton.click()
     }
@@ -28,11 +29,14 @@ export class LoginPage {
         await this.registerLink.click()
     }
 
-    async checkLogin(negativeTest) {
+    async checkLogin(negativeTest, userData) {
+        const {username} = userData
+
         if(!negativeTest){
-                await expect(this.page).toHaveURL('rokdim.co.il')
-            }
-            else
-                await expect(this.page).toHaveURL('https://rokdim.co.il/login?redirect=%2F')
+            await expect(this.page.getByText(username)).toBeVisible()
+        }
+        else{
+            await expect(this.loginButton).toBeVisible()
+        }
     }
 }

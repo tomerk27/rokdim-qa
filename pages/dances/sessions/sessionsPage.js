@@ -27,4 +27,16 @@ export class SessionsPage {
         await this.type.click()
         await this.page.getByRole('button', { name: type }).click()
     }
+
+    async getAllSessions() {
+        const rows = await this.page.locator('[data-testid="table-row-element"]');
+        const rowsCount = await rows.count();
+
+        const sessions = []
+
+        for(let i; i < rowsCount; i++) {
+            sessions.push(rows.nth(i))
+        }     
+        return sessions   
+    }
 }

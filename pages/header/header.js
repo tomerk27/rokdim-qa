@@ -86,6 +86,6 @@ export class HeaderPage {
     async checkLogout(userData){
         const {username} = userData
 
-        await expect(this.page.getByText(username)).not.toBeVisible()
+        await expect(this.page.getByRole('link', {name: username})).not.toBeVisible()
     }
 }

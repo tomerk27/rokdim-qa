@@ -4,12 +4,14 @@ dotenv.config()
 export const createTestData = (testData = {}) => {
     const {
         userData,
-        danceData
+        danceData, 
+        sessionsData
     } = testData
 
     return {
         userData: createUserTestData(userData),
-        danceData: createDanceData(danceData)
+        danceData: createDanceData(danceData),
+        sessionsData: createSessionsData(sessionsData)
     }
 }
 
@@ -48,5 +50,23 @@ export const createDanceData = (danceData = {}) => {
         shape: shape ?? 'Circle',
         yearFrom: yearFrom ?? '1949',
         yearTo: yearTo ?? '1951'
+    }
+}
+
+export const createSessionsData = (sessionsData = {}) => {
+    const {
+        day,
+        guide,
+        type,
+        location
+    } = sessionsData
+
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+    return {
+        day: day ?? days[Math.floor(Math.random() * days.length)],
+        guide: guide ?? 'Yaron Meishar',
+        type: type ?? 'Golden age', 
+        location: location ?? 'Tel Aviv, Israel'
     }
 }

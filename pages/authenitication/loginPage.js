@@ -33,7 +33,7 @@ export class LoginPage {
         const {username} = userData
 
         if(!negativeTest){
-            await expect(this.page.getByText(username)).toBeVisible()
+            await expect(this.page.getByRole('link', {name: username})).toBeVisible()
         }
         else{
             await expect(this.loginButton).toBeVisible()

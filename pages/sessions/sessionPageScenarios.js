@@ -10,26 +10,30 @@ export const filterByParams = async (page, { sessionsData }) => {
         location
     } = sessionsData
 
+    const activateFilters = []
+
     if (day) {
         await sessionsPage.fillDay(day)
-        await sessionsPage.checkFilter(day)
+        activateFilters.push(day)
     }
 
     if (guide) {
         await sessionsPage.fillGuide(guide)
-        await sessionsPage.checkFilter(guide)
+        activateFilters.push(guide)
 
     }
 
     if (type) {
         await sessionsPage.fillType(type)
-        await sessionsPage.checkFilter(type)
+        activateFilters.push(type)
 
     }
 
     if (location) {
         await sessionsPage.fillLocation(location)
-        await sessionsPage.checkFilter(location)
+        activateFilters.push(location)
     }
+
+    await sessionsPage.checkFilter(activateFilters)
 }
 

@@ -1,4 +1,7 @@
 import { expect } from '@playwright/test'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export class HeaderPage {
     /**
@@ -23,7 +26,7 @@ export class HeaderPage {
         this.dunavLogo = this.page.getByRole('link', { name: 'markid' })
         this.yaronMeisharLogo = this.page.getByRole('link', { name: 'yaron', exact: true })
     }
-    
+
     async clickDashboardButton() {
         await this.dashboardButton.click()
     }
@@ -65,27 +68,51 @@ export class HeaderPage {
     }
 
     async searchContent(content) {
-        if(content)
+        if (content)
             await this.searchBar.fill(content)
 
-        await this.searchButton.click() 
+        await this.searchButton.click()
     }
 
     async checkMarkidSite() {
-        await expect(this.page).toHaveURL('http://markid.co.il/')
+        await expect(this.page).toHaveURL(process.env.MARKID_URL)
     }
 
     async checkDunavSite() {
-        await expect(this.page).toHaveURL('https://dunav.org.il/')
+        await expect(this.page).toHaveURL(process.env.DUNAV_URL)
     }
 
     async checkGoingToYaronMeisharPage() {
         await expect(this.page).toHaveText('Mobile Phone: 052-5620447')
     }
 
-    async checkLogout(userData){
-        const {username} = userData
+    async checkLogout(userData) {
+        const { username } = userData
 
-        await expect(this.page.getByRole('link', {name: username})).not.toBeVisible()
+        await expect(this.page.getByRole('link', { name: username })).not.toBeVisible()
+    }
+
+    async checkDancesClick() {
+        await expect(this.page).toHaveURL(process.env.BASE_URL_WEB + '/dances/search')
+    }
+
+    async checkSessionsClick() {
+        await expect(this.page).toHaveURL(process.env.BASE_URL_WEB + '/sessions/byLocationAndDay')
+    }
+
+    async checkTeachersClick() {
+        await expect(this.page).toHaveURL(process.env.BASE_URL_WEB + '/guides')
+    }
+
+    async checkVipClick() {
+        await expect(this.page).toHaveURL(process.env.BASE_URL_WEB + '/subscriptions')
+    }
+
+    async checkAboutUsClick() {
+        await expect(this.page).toHaveURL(process.env.BASE_URL_WEB + '/aboutUs')
+    }
+
+    async checkRokdimNirClick() {
+        await expect(this.page).toHaveURL('https://magazines.rokdim.co.il/?userId=68fa08222b73b2ca538aecc3')
     }
 }

@@ -3,37 +3,20 @@ import { SessionsPage } from "./sessionsPage"
 export const filterByParams = async (page, { sessionsData }) => {
     const sessionsPage = new SessionsPage(page)
 
-    const {
-        day,
-        guide,
-        type,
-        location
-    } = sessionsData
-
     const activateFilters = []
 
-    if (day) {
-        await sessionsPage.fillDay(day)
-        activateFilters.push(day)
+    const fillFiled = {
+        day: sessionsPage.fillDay.bind(sessionsPage),
+        guide: sessionsPage.fillGuide.bind(sessionsPage),
+        type: sessionsPage.fillType.bind(sessionsPage),
+        location: sessionsPage.fillLocation.bind(sessionsPage)
     }
 
-    if (guide) {
-        await sessionsPage.fillGuide(guide)
-        activateFilters.push(guide)
-
+    for (const [field, value] of Object.entries(sessionsData)) {
+        if (value) {
+            await fillFiled[field](value)
+            activateFilters.push(value)
+        }
     }
-
-    if (type) {
-        await sessionsPage.fillType(type)
-        activateFilters.push(type)
-
-    }
-
-    if (location) {
-        await sessionsPage.fillLocation(location)
-        activateFilters.push(location)
-    }
-
-    await sessionsPage.checkFilter(activateFilters)
 }
 

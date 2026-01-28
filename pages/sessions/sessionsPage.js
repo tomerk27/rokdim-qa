@@ -14,8 +14,9 @@ export class SessionsPage {
 
     async fillLocation(location) {
         await this.location.fill(location)
-        await this.location.locator('.suggetion-item').first()
-        //await this.page.getByRole('button', { name: location, exact: true}).click()
+        const firstSuggestion = await this.location.locator('.suggestion-item').first().click()
+        await firstSuggestion.wairFor({state: 'visible'})
+        await firstSuggestion.click()
     }
 
     async fillDay(day) {
@@ -35,23 +36,17 @@ export class SessionsPage {
 
     async getSessions() {
         await this.page.waitForSelector('[data-testid="table-row-element"]');
-        const rows = await this.page.locator('[data-testid="table-row-element"]')
+        const rows = this.page.locator('[data-testid="table-row-element"]')
         console.log(rows)
-        const rowsCount = await rows.count();
-        const sessions = []
-
-        for (let i = 0; i < rowsCount; i++) {
-            sessions.push(rows.nth(i))
-        }
-
-        return sessions
+        return rows
     }
 
     async checkFilter(filterParams) {
         const sessions = await this.getSessions()
+        const count = await sessions.count()
 
-
-        for (const session of sessions) {
+        for (let i = 0; i < count; i++) {
+            const session = sessions.nth(i)
             for (const filterParam of filterParams) {
                 await expect(session.getByText(filterParam)).toBeVisible();
             }
